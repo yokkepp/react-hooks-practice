@@ -1,9 +1,13 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const App = (props) => {
   const [state, setState] = useState(props);
-  const reset = () => setState(props);
   const { name, price } = state;
+
+  useEffect(() => {
+    console.log("useEffect is invoked.");
+  });
+
   return (
     <>
       <p>
@@ -15,7 +19,7 @@ const App = (props) => {
       <button onClick={() => setState({ ...state, price: price - 1 })}>
         -1
       </button>
-      <button onClick={reset}>Reset</button>
+      <button onClick={() => setState(props)}>Reset</button>
       <input
         type="text"
         value={name}
