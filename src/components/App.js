@@ -7,18 +7,33 @@ const App = () => {
   const [state, dispatch] = useReducer(reducer, []);
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
+
   const addEvent = (e) => {
     e.preventDefault();
-    const action = {
+    console.log({ state });
+    dispatch({
       type: "CREATE_EVENT",
       title,
       body,
-    };
-    console.log({ state });
-    dispatch(action);
+    });
     setTitle("");
     setBody("");
   };
+
+  const deleteAllEvents = (e) => {
+    e.preventDefault();
+    const action = {
+      type: "DELETE_ALL_EVENTS",
+    };
+
+    const result = window.confirm(
+      "本当に全てのイベントを削除してよろしいですか？"
+    );
+    if (result) dispatch(action);
+  };
+
+  const unCreatable = title === "" || body === "";
+  const unAllDeletable = state.length === 0;
 
   return (
     <>
@@ -30,7 +45,9 @@ const App = () => {
             <input
               className="form-control"
               id="formEventTitle"
-              onChange={(e) => setTitle(e.target.value)}
+              onChange={(e) => {
+                setTitle(e.target.value);
+              }}
               value={title}
             ></input>
           </div>
@@ -46,10 +63,21 @@ const App = () => {
             ></textarea>
           </div>
         </form>
-        <button className="btn btn-primary" onClick={addEvent}>
+        <button
+          id="addEventButton"
+          className="btn btn-primary"
+          onClick={addEvent}
+          disabled={unCreatable}
+        >
           イベントを作成する
         </button>
-        <button className="btn btn-danger">全てのイベントを削除する</button>
+        <button
+          className="btn btn-danger"
+          onClick={deleteAllEvents}
+          disabled={unAllDeletable}
+        >
+          全てのイベントを削除する
+        </button>
         <h4>イベント一覧</h4>
         <table className="table table-hover">
           <thead>
