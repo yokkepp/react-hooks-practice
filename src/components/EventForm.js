@@ -31,7 +31,6 @@ const EventForm = () => {
   };
 
   const unCreatable = title === "" || body === "";
-  const unAllDeletable = state.length === 0;
 
   return (
     <>
@@ -71,7 +70,7 @@ const EventForm = () => {
       <button
         className="btn btn-danger"
         onClick={deleteAllEvents}
-        disabled={unAllDeletable}
+        disabled={state.events.length === 0}
       >
         全てのイベントを削除する
       </button>
